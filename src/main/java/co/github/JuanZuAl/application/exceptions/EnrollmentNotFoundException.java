@@ -1,5 +1,8 @@
 package co.github.JuanZuAl.application.exceptions;
 
+/**
+ * Se lanza cuando no se encuentra una inscripción.
+ */
 public class EnrollmentNotFoundException extends RuntimeException {
     public EnrollmentNotFoundException(String message) {
         super(message);
@@ -8,7 +11,6 @@ public class EnrollmentNotFoundException extends RuntimeException {
         super(message, cause);
     }
     public EnrollmentNotFoundException(Throwable cause) {
-        super("Enrollment not found", cause);
+        super("Inscripción no encontrada", cause);
     }
 }
-

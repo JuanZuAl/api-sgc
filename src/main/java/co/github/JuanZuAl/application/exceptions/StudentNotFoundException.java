@@ -1,5 +1,8 @@
 package co.github.JuanZuAl.application.exceptions;
 
+/**
+ * Se lanza cuando no se encuentra un estudiante.
+ */
 public class StudentNotFoundException extends RuntimeException {
     public StudentNotFoundException(String message) {
         super(message);
@@ -8,6 +11,6 @@ public class StudentNotFoundException extends RuntimeException {
         super(message, cause);
     }
     public StudentNotFoundException(Throwable cause) {
-        super("Student not found", cause);
+        super("Estudiante no encontrado", cause);
     }
 }

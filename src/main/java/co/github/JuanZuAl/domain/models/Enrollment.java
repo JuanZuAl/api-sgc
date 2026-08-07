@@ -2,11 +2,18 @@ package co.github.JuanZuAl.domain.models;
 
 import java.time.LocalDate;
 
+/**
+ * Representa la inscripción de un estudiante en un curso.
+ */
 public class Enrollment {
     private Long id;
+    /** Identificador del estudiante asociado a esta inscripción. */
     private Long studentId;
+    /** Identificador del curso asociado a esta inscripción. */
     private Long courseId;
+    /** Fecha en que se creó la inscripción. */
     private LocalDate EnrollmentDate;
+    /** Estado actual de la inscripción. */
     private EnrollmentStatus status;
 
     public Enrollment(Long id, Long studentId, Long courseId, LocalDate enrollmentDate, EnrollmentStatus status) {

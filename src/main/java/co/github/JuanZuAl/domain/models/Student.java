@@ -2,11 +2,18 @@ package co.github.JuanZuAl.domain.models;
 
 import java.time.LocalDate;
 
+/**
+ * Representa a un estudiante en el sistema.
+ */
 public class Student {
     private long  id;
+    /** Nombre del estudiante. */
     private String firstName;
+    /** Apellido del estudiante. */
     private String lastName;
+    /** Correo electrónico del estudiante. */
     private String email;
+    /** Fecha de nacimiento del estudiante. */
     private LocalDate birthDate;
     public Student(long id, String firstName, String lastName   , String email, LocalDate birthDate) {
         this.id = id;
