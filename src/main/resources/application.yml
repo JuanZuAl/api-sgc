@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/nuevadbback2?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: Juan
+    password: Zuluaga12
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true

@@ -1,4 +1,4 @@
-package co.github.JuanZuAl.Main;
+/**package co.github.JuanZuAl.Main;
 
 import java.util.Scanner;
 
@@ -125,3 +125,5 @@ public class Main {
         } while (true);
     }
 }
+**/
+

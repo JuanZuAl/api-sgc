@@ -1,16 +1,33 @@
 package co.github.JuanZuAl.domain.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+
 /**
  * Representa un curso disponible en el sistema.
  */
+@Entity
+@Table(name = "courses")
 public class Course {
+    @Id
     private Long id;
+    @Column(name = "code", nullable = false)
+    @NotEmpty(message = "El código del curso no puede estar vacío")
     /** Código del curso. */
     private String code;
+    @Column(name = "name", nullable = false)
+    @NotEmpty(message = "El nombre del curso no puede estar vacío")
     /** Nombre del curso. */
     private String name;
     /** Descripción del curso. */
+    @Column(name = "description", nullable = false)
+    @NotEmpty(message = "La descripción del curso no puede estar vacía")
     private String description;
+    @Column(name = "max_capacity", nullable = false)
+    @NotEmpty(message = "La capacidad máxima del curso no puede estar vacía")
     /** Capacidad máxima del curso. */
     private Integer maxCapacity;
 
