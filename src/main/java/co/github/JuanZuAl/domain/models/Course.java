@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Representa un curso disponible en el sistema.
@@ -27,7 +28,7 @@ public class Course {
     @NotEmpty(message = "La descripción del curso no puede estar vacía")
     private String description;
     @Column(name = "max_capacity", nullable = false)
-    @NotEmpty(message = "La capacidad máxima del curso no puede estar vacía")
+    @NotNull(message = "La capacidad máxima del curso no puede estar vacía")
     /** Capacidad máxima del curso. */
     private Integer maxCapacity;
 

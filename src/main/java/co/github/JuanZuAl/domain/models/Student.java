@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -32,7 +33,7 @@ public class Student {
     private String email;
     /** Fecha de nacimiento del estudiante. */
     @Column(name = "birth_date", nullable = false)
-    @NotEmpty(message = "La fecha de nacimiento no puede estar vacía")
+    @NotNull(message = "La fecha de nacimiento no puede estar vacía")
     private LocalDate birthDate;
     public Student(long id, String firstName, String lastName   , String email, LocalDate birthDate) {
         this.id = id;

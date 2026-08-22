@@ -2,9 +2,11 @@ package co.github.JuanZuAl.domain.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -18,19 +20,20 @@ public class Enrollment {
     private Long id;
     /** Identificador del estudiante asociado a esta inscripción. */
     @Column(name = "student_id", nullable = false)
-    @NotEmpty(message = "El ID del estudiante no puede estar vacío")
+    @NotNull(message = "El ID del estudiante no puede estar vacío")
     private Long studentId;
     /** Identificador del curso asociado a esta inscripción. */
     @Column(name = "course_id", nullable = false)
-    @NotEmpty(message = "El ID del curso no puede estar vacío")
+    @NotNull(message = "El ID del curso no puede estar vacío")
     private Long courseId;
     /** Fecha en que se creó la inscripción. */
     @Column(name = "enrollment_date", nullable = false)
-    @NotEmpty(message = "La fecha de inscripción no puede estar vacía")
+    @NotNull(message = "La fecha de inscripción no puede estar vacía")
     private LocalDate EnrollmentDate;
     /** Estado actual de la inscripción. */
     @Column(name = "status", nullable = false)
-    @NotEmpty(message = "El estado de la inscripción no puede estar vacío")
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "El estado de la inscripción no puede estar vacío")
     private EnrollmentStatus status;
 
     public Enrollment(Long id, Long studentId, Long courseId, LocalDate enrollmentDate, EnrollmentStatus status) {
