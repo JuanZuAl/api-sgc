@@ -104,4 +104,9 @@ public class StudentServiceImpl implements StudentService {
 
         return studentService.update(student);
     }
+
+    @Override
+    public boolean enrollmentStatus(Long studentId) {
+        return false;
+    }
 }

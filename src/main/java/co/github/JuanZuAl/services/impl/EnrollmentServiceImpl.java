@@ -1,12 +1,11 @@
 package co.github.JuanZuAl.services.impl;
 
 import co.github.JuanZuAl.domain.models.Enrollment;
-import co.github.JuanZuAl.repository.EnrollmentRepository;
 import co.github.JuanZuAl.services.EnrollmentService;
 import jakarta.persistence.EntityNotFoundException;
 
+
 import java.util.List;
-import java.util.Optional;
 
 public class EnrollmentServiceImpl implements EnrollmentService {
 
@@ -47,6 +46,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public void deleteById(long id) {
+        if (enrollmentService.findById(id) == null || enrollmentService.findAll().isEmpty()) {
+            throw new EntityNotFoundException("Enrollment with id " + id + " not found");
+        }
+        if (enrollmentService.findAll().stream().noneMatch(e -> e.getId().equals(id))) {
+            throw new EntityNotFoundException("Enrollment with id " + id + " not found");
+        }
+        enrollmentService.deleteById(id);
 
     }
 
@@ -57,11 +63,17 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public Enrollment findByStudentId(long studentId) {
-        return null;
+        if (enrollmentService.findAll().stream().noneMatch(e -> e.getStudentId() == studentId)) {
+            throw new EntityNotFoundException("Enrollment with student id " + studentId + " not found");
+        }
+        return enrollmentService.findAll().stream().filter(e -> e.getStudentId() == studentId).findFirst().orElse(null);
     }
 
     @Override
     public Enrollment findByCourseId(long courseId) {
-        return null;
+        if (enrollmentService.findAll().stream().noneMatch(e -> e.getCourseId() == courseId)) {
+            throw new EntityNotFoundException("Enrollment with course id " + courseId + " not found");
+        }
+        return enrollmentService.findAll().stream().filter(e -> e.getCourseId() == courseId).findFirst().orElse(null);
     }
 }

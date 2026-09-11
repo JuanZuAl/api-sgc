@@ -15,21 +15,21 @@ import jakarta.validation.constraints.NotNull;
 public class Course {
     @Id
     private Long id;
+    /** Código del curso. */
     @Column(name = "code", nullable = false)
     @NotEmpty(message = "El código del curso no puede estar vacío")
-    /** Código del curso. */
     private String code;
+    /** Nombre del curso. */
     @Column(name = "name", nullable = false)
     @NotEmpty(message = "El nombre del curso no puede estar vacío")
-    /** Nombre del curso. */
     private String name;
     /** Descripción del curso. */
     @Column(name = "description", nullable = false)
     @NotEmpty(message = "La descripción del curso no puede estar vacía")
     private String description;
+    /** Capacidad máxima del curso. */
     @Column(name = "max_capacity", nullable = false)
     @NotNull(message = "La capacidad máxima del curso no puede estar vacía")
-    /** Capacidad máxima del curso. */
     private Integer maxCapacity;
 
     public Course(Long id, String code, String name, String description, Integer maxCapacity) {
