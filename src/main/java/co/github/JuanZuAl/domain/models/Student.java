@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "students")
 public class Student {
     @Id
-    private long  id;
+    private long  studentId;
     /** Nombre del estudiante. */
     @Column(name = "first_name", nullable = false)
     @NotEmpty(message = "El nombre no puede estar vacío")
@@ -31,39 +31,16 @@ public class Student {
     @NotEmpty(message = "El correo electrónico no puede estar vacío")
     @Email(message = "El correo electrónico debe tener un formato válido")
     private String email;
-    /** Fecha de nacimiento del estudiante. */
-    @Column(name = "birth_date", nullable = false)
-    @NotNull(message = "La fecha de nacimiento no puede estar vacía")
-    private LocalDate birthDate;
-    public Student(long id, String firstName, String lastName   , String email, LocalDate birthDate) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-    }
+    /** Número de teléfono del estudiante. */
+    @Column(name = "phone_number", nullable = false)
+    @NotNull(message = "El numero de celular no puede estar vacio")
+    private String phoneNumber;
 
     public Student() {
     }
 
-    public long getId() {
-        return id;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
     }
 
     public void setFirstName(String firstName) {
@@ -78,12 +55,41 @@ public class Student {
         this.email = email;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
+
+    public long getStudentId() {
+        return studentId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public Student(long studentId, String firstName, String lastName, String email, String phoneNumber) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
-        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName  + ", email=" + email + ", birthDate=" + birthDate + "]";
+        return "Student [id=" + studentId + ", firstName=" + firstName + ", lastName=" + lastName  + ", email=" + email + ", celNumber=" + phoneNumber + "]";
     }
 
 

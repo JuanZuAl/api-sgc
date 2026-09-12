@@ -1,21 +1,23 @@
 package co.github.JuanZuAl.services;
 
 import co.github.JuanZuAl.domain.models.Student;
-import co.github.JuanZuAl.repository.StudentRepository;
+import co.github.JuanZuAl.dto.CreateStudentDto;
+import co.github.JuanZuAl.dto.UpdateStudentDto;
+import co.github.JuanZuAl.dto.response.StudentResponseDto;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentService  {
+public interface StudentService {
 
-
-    Student create(Student student);
-    void deleteById(Long id);
-    boolean existsById(Long id);
-    boolean existsByEmail(String email);
-    List<Student> findAll();
+    Student findById(Long studentId);
+    List<StudentResponseDto> findAll();
     Optional<Student> findByName(String name);
-    boolean existsByStudentId(Long studentId);
-    Optional<Student> update(Student student);
-    boolean enrollmentStatus(Long studentId);
+
+    Student create(CreateStudentDto student);
+
+    Student update(Long studentId, UpdateStudentDto student);
+    void deleteById(Long studentId);
+    boolean existsById(Long studentId);
+    boolean existsByEmail(String email);
 }
