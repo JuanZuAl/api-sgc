@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "courses")
 public class Course {
     @Id
-    private Long id;
+    private Long courseId;
     /** Código del curso. */
     @Column(name = "code", nullable = false)
     @NotEmpty(message = "El código del curso no puede estar vacío")
@@ -32,8 +32,8 @@ public class Course {
     @NotNull(message = "La capacidad máxima del curso no puede estar vacía")
     private Integer maxCapacity;
 
-    public Course(Long id, String code, String name, String description, Integer maxCapacity) {
-        this.id = id;
+    public Course(Long courseId, String code, String name, String description, Integer maxCapacity) {
+        this.courseId = courseId;
         this.code = code;
         this.name = name;
         this.description = description;
@@ -43,8 +43,8 @@ public class Course {
     public Course() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getCourseId() {
+        return courseId;
     }
 
     public String getCode() {
@@ -63,8 +63,8 @@ public class Course {
         return maxCapacity;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public void setCode(String code) {
@@ -84,7 +84,7 @@ public class Course {
     }
     @Override
     public String toString() {
-        return "Course [id=" + id + ", code=" + code + ", name=" + name + ", description=" + description + ", maxCapacity=" + maxCapacity + "]";
+        return "Course [courseId=" + courseId + ", code=" + code + ", name=" + name + ", description=" + description + ", maxCapacity=" + maxCapacity + "]";
     }
 
 }

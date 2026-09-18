@@ -1,78 +1,91 @@
 package co.github.JuanZuAl.services.impl;
 
+import co.github.JuanZuAl.application.exceptions.BusinessException;
+import co.github.JuanZuAl.application.exceptions.CourseAlreadyExistsException;
+import co.github.JuanZuAl.application.exceptions.CourseNotFoundException;
 import co.github.JuanZuAl.domain.models.Course;
+import co.github.JuanZuAl.dto.CreateCourseDto;
+import co.github.JuanZuAl.dto.UpdateCourseDto;
+import co.github.JuanZuAl.repository.CourseRepository;
 import co.github.JuanZuAl.services.CourseService;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CourseServiceImpl implements CourseService {
 
-    private final CourseService courseService;
+    private final CourseRepository courseRepository;
 
-    public CourseServiceImpl(CourseService courseService) {
-        this.courseService = courseService;
+    public CourseServiceImpl(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Override
+    public Course findById(Long id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException("Course with id " + id + " not found"));
     }
 
     @Override
     public List<Course> findAll() {
-        return List.of();
+        return courseRepository.findAll();
     }
 
     @Override
     public Course findByName(String name) {
-        if (courseService.findAll().isEmpty()) {
-            throw new EntityNotFoundException("Course with name " + name + " not found");
-        }
-        return courseService.findAll().stream()
-                .filter(c -> c.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Course with name " + name + " not found"));
+        return courseRepository.findByName(name)
+                .orElseThrow(() -> new CourseNotFoundException("Course with name " + name + " not found"));
     }
 
     @Override
-    public Course findById(long id) {
-        if (courseService.findById(id) == null || courseService.findAll().isEmpty()) {
-            throw new EntityNotFoundException("Course with id " + id + " not found");
+    public Course create(CreateCourseDto course) {
+        if (course.courseId() == null) {
+            throw new BusinessException("Course id cannot be null");
         }
-        if (courseService.findById(id) == null) {
-            throw new EntityNotFoundException("Course with id " + id + " not found");
+        if (courseRepository.existsById(course.courseId())) {
+            throw new CourseAlreadyExistsException("Course with id " + course.courseId() + " already exists");
         }
-        return courseService.findById(id);
+        if (courseRepository.existsByCode(course.code())) {
+            throw new CourseAlreadyExistsException("Course with code " + course.code() + " already exists");
+        }
+        Course newCourse = new Course(
+                course.courseId(),
+                course.code(),
+                course.name(),
+                course.description(),
+                course.maxCapacity()
+        );
+        return courseRepository.save(newCourse);
     }
 
     @Override
-    public Course create(Course course) {
-        if (courseService.findById(course.getId()) != null || courseService.findAll().stream().anyMatch(c -> c.getId().equals(course.getId()))) {;
-            throw new IllegalArgumentException("Course with id " + course.getId() + " already exists");
+    public Course update(Long courseId, UpdateCourseDto course) {
+        Course existing = findById(courseId);
+        if (!existing.getCode().equals(course.code()) && courseRepository.existsByCode(course.code())) {
+            throw new CourseAlreadyExistsException("Course with code " + course.code() + " already exists");
         }
-        if (courseService.findAll().isEmpty()) {
-            throw new IllegalArgumentException("Course cannot be empty");
-        }
-        return courseService.create(course);
+        Course updatedCourse = new Course(
+                courseId,
+                course.code(),
+                course.name(),
+                course.description(),
+                course.maxCapacity()
+        );
+        return courseRepository.save(updatedCourse);
     }
 
     @Override
-    public Course update(Course course) {
-        if (courseService.findById(course.getId()) == null) {
-            throw new EntityNotFoundException("Course with id " + course.getId() + " not found");
+    public void deleteById(Long id) {
+        if (!courseRepository.existsById(id)) {
+            throw new CourseNotFoundException("Course with id " + id + " not found");
         }
-        if (courseService.findAll().isEmpty()) {
-            throw new IllegalArgumentException("Course cannot be empty");
-        }
-        return courseService.update(course);
+        courseRepository.deleteById(id);
     }
 
     @Override
-    public void deleteById(long id) {
-        if (courseService.findById(id) == null || courseService.findAll().isEmpty()) {
-            throw new EntityNotFoundException("Course with id " + id + " not found");
-        }
-        if (courseService.findAll().stream().noneMatch(c -> c.getId().equals(id))) {
-            throw new EntityNotFoundException("Course with id " + id + " not found");
-        }
-        courseService.deleteById(id);
+    public boolean existsById(Long id) {
+        return courseRepository.existsById(id);
     }
 
 }
-

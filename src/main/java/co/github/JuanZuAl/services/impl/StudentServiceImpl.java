@@ -1,112 +1,103 @@
 package co.github.JuanZuAl.services.impl;
 
+import co.github.JuanZuAl.application.exceptions.StudentAlreadyExistsException;
+import co.github.JuanZuAl.application.exceptions.StudentNotFoundException;
 import co.github.JuanZuAl.domain.models.Student;
+import co.github.JuanZuAl.dto.CreateStudentDto;
+import co.github.JuanZuAl.dto.UpdateStudentDto;
+import co.github.JuanZuAl.dto.response.StudentResponseDto;
 import co.github.JuanZuAl.repository.StudentRepository;
 import co.github.JuanZuAl.services.StudentService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentServiceImpl(StudentService studentService) {
-        this.studentService= studentService;
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-
-    public List<Student> findAll() {
-        return List.of();
+    @Override
+    public Student findById(Long studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student with ID " + studentId + " does not exist."));
     }
 
+    @Override
+    public List<StudentResponseDto> findAll() {
 
+        return studentRepository.findAll().stream()
+                .map(student -> new StudentResponseDto(
+                        student.getStudentId(),
+                        student.getFirstName(),
+                        student.getLastName(),
+                        student.getEmail(),
+                        student.getPhoneNumber()
+                ))
+                .toList();
+    }
+
+    @Override
     public Optional<Student> findByName(String name) {
-        return Optional.empty();
-    }
-
-
-    public Student create(Student student) {
-        if (existsByStudentId(student.getId())) {
-            throw new IllegalArgumentException("Student with ID " + student.getId() + " already exists.");
-        }
-        if  (existsByEmail(student.getEmail())) {
-            throw new IllegalArgumentException("Student with email " + student.getEmail() + " already exists.");
-        }
-        if (student.getFirstName() == null || student.getFirstName().isEmpty()) {
-            throw new IllegalArgumentException("Student first name cannot be null or empty.");
-        }
-        if (student.getLastName() == null || student.getLastName().isEmpty()) {
-            throw new IllegalArgumentException("Student last name cannot be null or empty.");
-        }
-        if (student.getEmail() == null || student.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("Student email cannot be null or empty.");
-        }
-        return studentService.create(student);
-    }
-
-
-    public void deleteById(Long id) {
-        if (!existsByStudentId(id)) {
-            throw new IllegalArgumentException("Student with ID " + id + " does not exist.");
-        }
-        studentService.deleteById(id);
+        return studentRepository.findByFirstName(name);
     }
 
     @Override
-    public boolean existsById(Long id) {
-        if (!existsByStudentId(id)) {
-            throw new IllegalArgumentException("Student with ID " + id + " does not exist.");
+    public Student create(CreateStudentDto student) {
+        if (studentRepository.existsById(student.studentId())) {
+            throw new StudentAlreadyExistsException("Student with ID " + student.studentId() + " already exists.");
         }
-        if (id == null) {
-            throw new IllegalArgumentException("Student ID cannot be null.");
+        if (studentRepository.existsByEmail(student.email())) {
+            throw new StudentAlreadyExistsException("Student with email " + student.email() + " already exists.");
         }
-        return studentService.existsById(id);
+
+        Student newStudent = new Student(
+                student.studentId(),
+                student.firstName(),
+                student.lastName(),
+                student.email(),
+                student.phoneNumber()
+        );
+        return studentRepository.save(newStudent);
     }
 
-    public boolean existsByStudentId(Long studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Student ID cannot be null.");
+    @Override
+    public Student update(Long studentId, UpdateStudentDto student) {
+        Student existing = findById(studentId);
+        if (!existing.getEmail().equals(student.email()) && studentRepository.existsByEmail(student.email())) {
+            throw new StudentAlreadyExistsException("Student with email " + student.email() + " already exists.");
         }
-        if(!studentService.existsById(studentId)) {
-            throw new IllegalArgumentException("Student with ID " + studentId + " does not exist.");
-        }
-        return studentService.existsById(studentId);
+        Student newUpdatedStudent = new Student(
+                studentId,
+                student.firstName(),
+                student.lastName(),
+                student.email(),
+                student.phoneNumber()
+        );
+        return studentRepository.save(newUpdatedStudent);
     }
 
+    @Override
+    public void deleteById(Long studentId) {
+        if (!studentRepository.existsById(studentId)) {
+            throw new StudentNotFoundException("Student with ID " + studentId + " does not exist.");
+        }
+        studentRepository.deleteById(studentId);
+    }
 
+    @Override
+    public boolean existsById(Long studentId) {
+        return studentRepository.existsById(studentId);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Student email cannot be null or empty.");
-        }
-        if (!studentService.existsByEmail(email)) {
-            throw new IllegalArgumentException("Student with email " + email + " does not exist.");
-        }
-        return studentService.existsByEmail(email);
+        return studentRepository.existsByEmail(email);
     }
 
-
-
-
-    public Optional<Student> update(Student student) {
-     if (!existsByStudentId(student.getId())) {
-            throw new IllegalArgumentException("Student with ID " + student.getId() + " does not exist.");
-        }
-        if (student.getFirstName() == null || student.getFirstName().isEmpty()) {
-            throw new IllegalArgumentException("Student first name cannot be null or empty.");
-        }
-        if (student.getLastName() == null || student.getLastName().isEmpty()) {
-            throw new IllegalArgumentException("Student last name cannot be null or empty.");
-        }
-        if (student.getEmail() == null || student.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("Student email cannot be null or empty.");
-        }
-
-        return studentService.update(student);
-    }
-
-    @Override
-    public boolean enrollmentStatus(Long studentId) {
-        return false;
-    }
 }

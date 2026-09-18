@@ -1,16 +1,14 @@
 package co.github.JuanZuAl.repository;
-import co.github.JuanZuAl.domain.models.Course;
 
-import java.util.List;
+import co.github.JuanZuAl.domain.models.Course;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
-public interface CourseRepository {
+@Repository
+public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    List<Course> findAll();
     Optional<Course> findByName(String name);
-    Course save(Course course);
-    void deleteById(Long id);
-    Optional<Course> update(Course course);
-    boolean existsByCourseId(Long courseId);
-    Optional<Course> findById(Long id);
+    boolean existsByCode(String code);
 }
