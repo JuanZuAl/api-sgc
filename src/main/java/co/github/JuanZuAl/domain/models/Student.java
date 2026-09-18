@@ -38,6 +38,13 @@ public class Student {
 
     public Student() {
     }
+    public Student(long studentId, String firstName, String lastName, String email, String phoneNumber) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 
     public void setStudentId(long studentId) {
         this.studentId = studentId;
@@ -77,14 +84,6 @@ public class Student {
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public Student(long studentId, String firstName, String lastName, String email, String phoneNumber) {
-        this.studentId = studentId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 
     @Override

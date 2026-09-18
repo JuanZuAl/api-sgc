@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class StudenRepositoryImpl  {
+public class StudentRepositoryImpl  {
 
     private final StudentRepository studentRepository;
 
-    public StudenRepositoryImpl(StudentRepository studentRepository) {
+    public StudentRepositoryImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

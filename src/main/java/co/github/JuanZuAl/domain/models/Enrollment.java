@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "enrollments")
 public class Enrollment {
     @Id
-    private Long id;
+    private Long enrollmentId;
     /** Identificador del estudiante asociado a esta inscripción. */
     @Column(name = "student_id", nullable = false)
     @NotNull(message = "El ID del estudiante no puede estar vacío")
@@ -36,8 +36,8 @@ public class Enrollment {
     @NotNull(message = "El estado de la inscripción no puede estar vacío")
     private EnrollmentStatus status;
 
-    public Enrollment(Long id, Long studentId, Long courseId, LocalDate enrollmentDate, EnrollmentStatus status) {
-        this.id = id;
+    public Enrollment(Long enrollmentId, Long studentId, Long courseId, LocalDate enrollmentDate, EnrollmentStatus status) {
+        this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;
         EnrollmentDate = enrollmentDate;
@@ -47,8 +47,8 @@ public class Enrollment {
     public Enrollment() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getEnrollmentId() {
+        return enrollmentId;
     }
 
     public Long getStudentId() {
@@ -67,8 +67,8 @@ public class Enrollment {
         return status;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEnrollmentId(Long enrollmentId) {
+        this.enrollmentId = enrollmentId;
     }
 
     public void setStudentId(Long studentId) {
@@ -88,7 +88,7 @@ public class Enrollment {
     }
     @Override
     public String toString() {
-        return "Enrollment [id=" + id + ", studentId=" + studentId + ", courseId=" + courseId + ", EnrollmentDate="
+        return "Enrollment [enrollmentId=" + enrollmentId + ", studentId=" + studentId + ", courseId=" + courseId + ", EnrollmentDate="
                 + EnrollmentDate + ", status=" + status + "]";
     }
 }

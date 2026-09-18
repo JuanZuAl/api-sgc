@@ -1,6 +1,6 @@
 package co.github.JuanZuAl.services.impl;
 
-import co.github.JuanZuAl.application.exceptions.BusinessException;
+import co.github.JuanZuAl.application.exceptions.StudentAlreadyExistsException;
 import co.github.JuanZuAl.application.exceptions.StudentNotFoundException;
 import co.github.JuanZuAl.domain.models.Student;
 import co.github.JuanZuAl.dto.CreateStudentDto;
@@ -50,10 +50,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student create(CreateStudentDto student) {
         if (studentRepository.existsById(student.studentId())) {
-            throw new BusinessException("Student with ID " + student.studentId() + " already exists.");
+            throw new StudentAlreadyExistsException("Student with ID " + student.studentId() + " already exists.");
         }
         if (studentRepository.existsByEmail(student.email())) {
-            throw new BusinessException("Student with email " + student.email() + " already exists.");
+            throw new StudentAlreadyExistsException("Student with email " + student.email() + " already exists.");
         }
 
         Student newStudent = new Student(
@@ -68,12 +68,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Long studentId, UpdateStudentDto student) {
-        Student existing = findById(student.studentId());
+        Student existing = findById(studentId);
         if (!existing.getEmail().equals(student.email()) && studentRepository.existsByEmail(student.email())) {
-            throw new BusinessException("Student with email " + student.email() + " already exists.");
+            throw new StudentAlreadyExistsException("Student with email " + student.email() + " already exists.");
         }
         Student newUpdatedStudent = new Student(
-                student.studentId(),
+                studentId,
                 student.firstName(),
                 student.lastName(),
                 student.email(),
@@ -100,18 +100,4 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.existsByEmail(email);
     }
 
-    private void validate(Student student) {
-        if (student.getFirstName() == null || student.getFirstName().isEmpty()) {
-            throw new BusinessException("Student first name cannot be null or empty.");
-        }
-        if (student.getLastName() == null || student.getLastName().isEmpty()) {
-            throw new BusinessException("Student last name cannot be null or empty.");
-        }
-        if (student.getEmail() == null || student.getEmail().isEmpty()) {
-            throw new BusinessException("Student email cannot be null or empty.");
-        }
-        if (student.getPhoneNumber() == null || student.getPhoneNumber().isEmpty()) {
-            throw new BusinessException("Student phone number cannot be null or empty.");
-        }
-    }
 }

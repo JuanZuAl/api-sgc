@@ -1,8 +1,11 @@
 package co.github.JuanZuAl.services.impl;
 
 import co.github.JuanZuAl.application.exceptions.BusinessException;
+import co.github.JuanZuAl.application.exceptions.CourseAlreadyExistsException;
 import co.github.JuanZuAl.application.exceptions.CourseNotFoundException;
 import co.github.JuanZuAl.domain.models.Course;
+import co.github.JuanZuAl.dto.CreateCourseDto;
+import co.github.JuanZuAl.dto.UpdateCourseDto;
 import co.github.JuanZuAl.repository.CourseRepository;
 import co.github.JuanZuAl.services.CourseService;
 import org.springframework.stereotype.Service;
@@ -36,28 +39,40 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course create(Course course) {
-        validate(course);
-        if (course.getId() == null) {
+    public Course create(CreateCourseDto course) {
+        if (course.courseId() == null) {
             throw new BusinessException("Course id cannot be null");
         }
-        if (courseRepository.existsById(course.getId())) {
-            throw new BusinessException("Course with id " + course.getId() + " already exists");
+        if (courseRepository.existsById(course.courseId())) {
+            throw new CourseAlreadyExistsException("Course with id " + course.courseId() + " already exists");
         }
-        if (courseRepository.existsByCode(course.getCode())) {
-            throw new BusinessException("Course with code " + course.getCode() + " already exists");
+        if (courseRepository.existsByCode(course.code())) {
+            throw new CourseAlreadyExistsException("Course with code " + course.code() + " already exists");
         }
-        return courseRepository.save(course);
+        Course newCourse = new Course(
+                course.courseId(),
+                course.code(),
+                course.name(),
+                course.description(),
+                course.maxCapacity()
+        );
+        return courseRepository.save(newCourse);
     }
 
     @Override
-    public Course update(Course course) {
-        validate(course);
-        Course existing = findById(course.getId());
-        if (!existing.getCode().equals(course.getCode()) && courseRepository.existsByCode(course.getCode())) {
-            throw new BusinessException("Course with code " + course.getCode() + " already exists");
+    public Course update(Long courseId, UpdateCourseDto course) {
+        Course existing = findById(courseId);
+        if (!existing.getCode().equals(course.code()) && courseRepository.existsByCode(course.code())) {
+            throw new CourseAlreadyExistsException("Course with code " + course.code() + " already exists");
         }
-        return courseRepository.save(course);
+        Course updatedCourse = new Course(
+                courseId,
+                course.code(),
+                course.name(),
+                course.description(),
+                course.maxCapacity()
+        );
+        return courseRepository.save(updatedCourse);
     }
 
     @Override
@@ -73,18 +88,4 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.existsById(id);
     }
 
-    private void validate(Course course) {
-        if (course.getCode() == null || course.getCode().isEmpty()) {
-            throw new BusinessException("Course code cannot be null or empty");
-        }
-        if (course.getName() == null || course.getName().isEmpty()) {
-            throw new BusinessException("Course name cannot be null or empty");
-        }
-        if (course.getDescription() == null || course.getDescription().isEmpty()) {
-            throw new BusinessException("Course description cannot be null or empty");
-        }
-        if (course.getMaxCapacity() == null || course.getMaxCapacity() <= 0) {
-            throw new BusinessException("Course max capacity must be greater than zero");
-        }
-    }
 }
