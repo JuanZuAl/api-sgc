@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/enrollments")
+@RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;

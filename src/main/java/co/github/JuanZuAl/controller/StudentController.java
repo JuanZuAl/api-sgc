@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -25,9 +25,9 @@ public class StudentController {
             return ResponseEntity.ok(students);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
-            return ResponseEntity.ok(StudentResponseDto.from(studentService.findById(id)));
+    @GetMapping("{studentId}")
+    public ResponseEntity<Object> findById(@PathVariable Long studentId) {
+            return ResponseEntity.ok(StudentResponseDto.from(studentService.findById(studentId)));
     }
 
     @PostMapping
@@ -36,16 +36,16 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.CREATED).body( StudentResponseDto.from(createdStudent));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody UpdateStudentDto student) {
-            var updatedStudent = studentService.update(id, student);
+    @PutMapping("{studentId}")
+    public ResponseEntity<Object> update(@PathVariable Long studentId, @Valid @RequestBody UpdateStudentDto student) {
+            var updatedStudent = studentService.update(studentId, student);
             return ResponseEntity.ok(StudentResponseDto.from(updatedStudent));
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
+    @DeleteMapping("{studentId}")
+    public ResponseEntity<Object> delete(@PathVariable Long studentId) {
 
-            studentService.deleteById(id);
+            studentService.deleteById(studentId);
             return ResponseEntity.noContent().build();
 
     }

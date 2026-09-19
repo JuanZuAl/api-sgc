@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -29,7 +29,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{courseId}")
     public ResponseEntity<Object> findById(@PathVariable Long id) {
         return ResponseEntity.ok(courseService.findById(id));
     }
@@ -45,13 +45,13 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(CourseResponseDto.from(createdCourse));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{courseId}")
     public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody UpdateCourseDto course) {
         var updatedCourse = courseService.update(id, course);
         return ResponseEntity.ok(CourseResponseDto.from(updatedCourse));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{courseId}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         courseService.deleteById(id);
         return ResponseEntity.noContent().build();
