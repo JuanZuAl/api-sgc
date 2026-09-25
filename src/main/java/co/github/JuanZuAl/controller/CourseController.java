@@ -30,8 +30,8 @@ public class CourseController {
     }
 
     @GetMapping("{courseId}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(courseService.findById(id));
+    public ResponseEntity<Object> findById(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.findById(courseId));
     }
 
     @GetMapping("name/{name}")
@@ -46,14 +46,14 @@ public class CourseController {
     }
 
     @PutMapping("{courseId}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody UpdateCourseDto course) {
-        var updatedCourse = courseService.update(id, course);
+    public ResponseEntity<Object> update(@PathVariable Long courseId, @Valid @RequestBody UpdateCourseDto course) {
+        var updatedCourse = courseService.update(courseId, course);
         return ResponseEntity.ok(CourseResponseDto.from(updatedCourse));
     }
 
     @DeleteMapping("{courseId}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
-        courseService.deleteById(id);
+    public ResponseEntity<Object> delete(@PathVariable Long courseId) {
+        courseService.deleteById(courseId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface EnrollmentService {
 
-    Enrollment findById(Long id);
-    List<Enrollment> findAll();
+    Enrollment findById(Long id); // Segundo metodo en en front enrollmentDbService .get
+    List<Enrollment> findAll(); // primer metodo en en front enrollmentDbService .get
     List<Enrollment> findByStudentId(Long studentId);
     List<Enrollment> findByCourseId(Long courseId);
     Enrollment create(CreateEnrollmentDto enrollment);
