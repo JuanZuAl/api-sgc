@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -29,9 +29,9 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(courseService.findById(id));
+    @GetMapping("{courseId}")
+    public ResponseEntity<Object> findById(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.findById(courseId));
     }
 
     @GetMapping("name/{name}")
@@ -45,15 +45,15 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(CourseResponseDto.from(createdCourse));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody UpdateCourseDto course) {
-        var updatedCourse = courseService.update(id, course);
+    @PutMapping("{courseId}")
+    public ResponseEntity<Object> update(@PathVariable Long courseId, @Valid @RequestBody UpdateCourseDto course) {
+        var updatedCourse = courseService.update(courseId, course);
         return ResponseEntity.ok(CourseResponseDto.from(updatedCourse));
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
-        courseService.deleteById(id);
+    @DeleteMapping("{courseId}")
+    public ResponseEntity<Object> delete(@PathVariable Long courseId) {
+        courseService.deleteById(courseId);
         return ResponseEntity.noContent().build();
     }
 }
